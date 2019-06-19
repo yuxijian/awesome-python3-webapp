@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>jQuery带歌单列表在线网页音乐播放器代码</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="../static/musicplayer/fonts/iconfont.css">
+<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/reset.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/player.css" />
+
+</head>
+<!--禁止body垂直滑动-->
+<body style="overflow-y:hidden">
+<!--<script src="/demos/googlegg.js"></script>-->
+
+
+<!-- 播放器 -->
+<div class="music-player">
+	<!-- audio标签 -->
+	<audio class="music-player__audio" ></audio>
+	<!-- 歌曲列表 -->
+	<div class="music-player__list" style="margin-left: -61%;">
+		<ul class="music__list_content">
+			<!-- <li class="music__list__item play">123</li>
+			<li class="music__list__item">123</li>
+			<li class="music__list__item">123</li> -->
+		</ul>
+	</div>
+	<!--上传操作	-->
+	<div style="float:right;margin-top: -13%;margin-right: -58%;">
+	   <button type="button" class="upload_btn" onclick="openUploadMusicModal()"  style="color: #fff;background-color: #007bff;border-color: #007bff">上传歌曲</button>
+	</div>
+	<!-- 播放器主体 -->
+	<div class="music-player__main" style="margin-top: 80%;margin-left: -60%;margin-right: -60%">
+		<!-- 模糊背景 -->
+		<div class="music-player__blur"></div>
+		<!-- 唱片 -->
+		<div class="music-player__disc">
+			<!-- 唱片图片 -->
+			<div class="music-player__image">
+				<img width="100%" src="" alt="">
+			</div>
+			<!-- 指针 -->
+			<div class="music-player__pointer"><img width="100%" src="../static/musicplayer/images/cd_tou.png" alt=""></div>
+		</div>
+		<!-- 控件主体 -->
+		<div class="music-player__controls">
+			<!-- 歌曲信息 -->
+			<div class="music__info">
+				<h3 class="music__info--title">...</h3>
+				<p class="music__info--singer">...</p>
+			</div>
+			<!-- 控件... -->
+			<div class="player-control">
+				<div class="player-control__content">
+					<div class="player-control__btns">
+						<div class="player-control__btn player-control__btn--prev"><i class="iconfont icon-prev"></i></div>
+						<div class="player-control__btn player-control__btn--play"><i class="iconfont icon-play"></i></div>
+						<div class="player-control__btn player-control__btn--next"><i class="iconfont icon-next"></i></div>
+						<div class="player-control__btn player-control__btn--mode"><i class="iconfont icon-loop"></i></div>
+					</div>
+					<div class="player-control__volume">
+						<div class="control__volume--icon player-control__btn"><i class="iconfont icon-volume"></i></div>
+						<div class="control__volume--progress progress"></div>
+					</div>
+				</div>
+
+				<!-- 歌曲播放进度 -->
+				<div class="player-control__content">
+					<div class="player__song--progress progress"></div>
+					<div class="player__song--timeProgess nowTime">00:00</div>
+					<div class="player__song--timeProgess totalTime">00:00</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script src="../static/musicplayer/js/utill.js"></script>
+<script src="../static/musicplayer/js/jquery.min.js"></script>
+<script src="../static/js/vue.min.js"></script>
+<script src="../static/js/awesome.js"></script>
+<script src="../static/musicplayer/js/player.js"></script>
+<script src="../static/bootstrap/js/cdn.bootstrap.min.js"></script>
+
+<script>
+
+function initVM(data) {
+    $('#vm').show();
+    var vm = new Vue({
+        el: '#vm',
+        data: {
+            songs: data.songs,
+            page: data.page
+        }
+    });
+}
+
+//加载后台数据，初始化音乐列表
+function initPlayerCreator(data){
+	new Player(data.songs);
+}
+
+//获取后台音乐列表数据
+
+$(document).ready(function() {
+    getJSON('/api/musics', {
+        page: {{ page_index }}
+    }, function (err, results) {
+        if (err) {
+            return fatal(err);
+        }
+        $('#loading').hide();
+        initPlayerCreator(results);
+    });
+});
+
+
+function  openUploadMusicModal() {
+    $("#uploadMusicModal").modal("show");
+}
+</script>
+
+</body>
+</html>

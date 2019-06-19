@@ -1,0 +1,20 @@
+/*! 西见博客项目 | 音乐栏 | */
+
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+body {
+    margin: 0
+}
+
+
+.vaeyxj-music{
+    position: absolute;
+    width: 70%;
+    height: 50%;
+    left: 15%;
+    right: 15%;
+}

@@ -6,14 +6,14 @@
 
 <script>
 
-var comment_url = '/api/blogs/{{ blog.id }}/comments';
+    const comment_url = '/api/blogs/{{ blog.id }}/comments';
 
-$(function () {
-    var $form = $('#form-comment');
+    $(function () {
+    const $form = $('#form-comment');
     $form.submit(function (e) {
         e.preventDefault();
         $form.showFormError('');
-        var content = $form.find('textarea').val().trim();
+        const content = $form.find('textarea').val().trim();
         if (content==='') {
             return $form.showFormError('请输入评论内容！');
         }
@@ -97,9 +97,10 @@ $(function () {
         <div class="uk-panel uk-panel-header">
             <h3 class="uk-panel-title">友情链接</h3>
             <ul class="uk-list uk-list-line">
-                <li><i class="uk-icon-link"></i> <a href="#">编程</a></li>
-                <li><i class="uk-icon-link"></i> <a href="#">思考</a></li>
-                <li><i class="uk-icon-link"></i> <a href="#">读书</a></li>
+                <li><i class="uk-icon-link"></i> <a target="_blank" href="http://weavesilk.com/">超酷壁纸🆒</a></li>
+                <li><i class="uk-icon-link"></i> <a target="_blank" href="https://www.sq688.com/">超高无损音乐🎵</a></li>
+                <li><i class="uk-icon-link"></i> <a target="_blank" href="https://www.saolei.org.cn/">在线扫雷🐲</a></li>
+                <li><i class="uk-icon-link"></i> <a target="_blank" href="https://github.com/tuteng/Best-websites-a-programmer-should-visit-zh#coding-style">程序员要看的网站这一个就够了</a></li>
             </ul>
         </div>
     </div>
