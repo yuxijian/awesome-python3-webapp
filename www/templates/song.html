@@ -6,9 +6,24 @@
 <title>jQuery带歌单列表在线网页音乐播放器代码</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="../static/musicplayer/fonts/iconfont.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/reset.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/player.css" />
+	<link rel="stylesheet" href="../static/bootstrap/css/cdn.bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="../static/bootstrap.fileinput/css/fileinput.css" />
+<!--	<link rel="stylesheet" href="../static/bootstrap.fileinput/css/fontawesome.css" crossorigin="anonymous"/>-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" media="screen" href="../static/bootstrap.fileinput/themes/explorer-fas/theme.css" />
+	<link rel="stylesheet" href="../static/musicplayer/fonts/iconfont.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/player.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="../static/musicplayer/css/reset.css" />
+
+	<script src="../static/musicplayer/js/jquery.min.js"></script>
+	<script src="../static/bootstrap/js/cdn.bootstrap.min.js"></script>
+	<script src="../static/bootstrap.fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="../static/bootstrap.fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../static/bootstrap.fileinput/js/fileinput.js" type="text/javascript"></script>
+    <script src="../static/bootstrap.fileinput/js/locales/zh.js" type="text/javascript"></script>
+    <script src="../static/bootstrap.fileinput/themes/fas/theme.js" type="text/javascript"></script>
+    <script src="../static/bootstrap.fileinput/themes/explorer-fas/theme.js" type="text/javascript"></script>
+
 
 </head>
 <!--禁止body垂直滑动-->
@@ -30,7 +45,49 @@
 	</div>
 	<!--上传操作	-->
 	<div style="float:right;margin-top: -13%;margin-right: -58%;">
-	   <button type="button" class="upload_btn" onclick="openUploadMusicModal()"  style="color: #fff;background-color: #007bff;border-color: #007bff">上传歌曲</button>
+	    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadMusicModal" style="color: #fff;background-color: #007bff;border-color: #007bff">上传歌曲</button>
+		<!-- 上传歌曲Modal -->
+		<div class="modal fade" id="uploadMusicModal" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title"> 现在请共享你的音乐吧</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <div class="modal-body">
+				  <form method="post" role="form" enctype="multipart/form-data">
+					  <div class="input-group">
+						<label class="col-form-label">歌曲文件:</label>
+						<input id="file-0" name="file-0" type="file" class="file" data-allowed-file-types="['flac','mp3','wav']" data-language="zh"
+							   data-max-file-size="0" data-theme="fas">
+					  </div>
+				  </form>
+<!--				<form action="../api/push/music_info" method="post" enctype="multipart/form-data">-->
+					<input type="text" hidden id="music_remote_path" name="music_remote_path">
+					<div class="form-group">
+					<label class="col-form-label">歌名:</label>
+					<input type="text" required class="form-control" id="title">
+				  </div>
+				  <div class="form-group">
+					<label class="col-form-label">歌手:</label>
+					<input type="text" required class="form-control" id="singer">
+				  </div>
+				  <div class="form-group">
+				   <label class="col-form-label">描述:</label>
+					  <textarea id="description" name="description" rows=3" class="form-control" placeholder="Enter description for the files selected..."></textarea>
+			      </div>
+<!--				</form>-->
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary" onclick="submitUploadMusic()">提交</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
 	</div>
 	<!-- 播放器主体 -->
 	<div class="music-player__main" style="margin-top: 80%;margin-left: -60%;margin-right: -60%">
@@ -81,11 +138,9 @@
 </div>
 
 <script src="../static/musicplayer/js/utill.js"></script>
-<script src="../static/musicplayer/js/jquery.min.js"></script>
 <script src="../static/js/vue.min.js"></script>
 <script src="../static/js/awesome.js"></script>
 <script src="../static/musicplayer/js/player.js"></script>
-<script src="../static/bootstrap/js/cdn.bootstrap.min.js"></script>
 
 <script>
 
@@ -119,11 +174,47 @@ $(document).ready(function() {
     });
 });
 
+$("#file-0").fileinput({
+	    showUpload: false,
+        uploadUrl: '../api/upload/music'
+    }).on('filepreupload', function(event, data, previewId, index) {
+    	var title = $('#title').val()
+    	if(title == null || title == ''){
+		}
+		var singer = $('#singer').val()
+		if(singer == null || singer == ''){
+		}
+    }).on('fileuploaded', function (event, data, previewId, index) {
+	    if(data.response.id == 1){
+	    	$("#music_remote_path").val("1111")
+		}
+		});
 
-function  openUploadMusicModal() {
-    $("#uploadMusicModal").modal("show");
-}
+
+    //提交上传音乐
+    function submitUploadMusic() {
+        var title = $('#title').val();
+        var singer = $('#singer').val();
+        var music_remote_path = $('#music_remote_path').val();
+        var description = $('#description').val();
+        $.ajax({
+            type: "POST",
+            url: "../api/push/music_info",
+            dataType: "json",
+            data: {"title": title,"singer":singer,"description":description,"music_remote_path":music_remote_path},
+            success: function (result) {
+            	debugger;
+                if (result.code == 1) {
+
+                } else {
+
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
 </script>
-
 </body>
 </html>

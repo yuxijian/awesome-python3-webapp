@@ -9,6 +9,8 @@ __author__ = 'vaeyxj'
 import re, time, json, logging, hashlib, base64, asyncio
 
 import markdown2
+import os
+import oss2
 
 from aiohttp import web
 
@@ -381,3 +383,8 @@ def api_get_musics(*, page='1'):
         }
     ]
     return dict(page=p, songs=songs)
+
+
+@post('/api/push/music_info')
+def api_push_music_info(request, *, title, singer, description, music_remote_path):
+    return dict(id=1)

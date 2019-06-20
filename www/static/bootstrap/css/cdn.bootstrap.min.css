@@ -6220,6 +6220,8 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     display: block !important
 }
 
+/*.d-block img{display: block;outline: none;border:0;height: 100%;width: 100%;}*/
+
 .d-table {
     display: table !important
 }
