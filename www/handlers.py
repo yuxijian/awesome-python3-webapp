@@ -17,7 +17,7 @@ from aiohttp import web
 from coroweb import get, post
 from apis import Page, APIValueError, APIResourceNotFoundError
 
-from models import User, Comment, Blog, next_id
+from models import User, Comment, Blog, Song, next_id
 from config import configs
 
 COOKIE_NAME = 'VAE-YXJ-SESSION'
@@ -364,8 +364,13 @@ def api_get_music(*, page='1'):
 
 @get('/api/musics')
 def api_get_musics(*, page='1'):
-    page_index = get_page_index(page)
-    num = 10
+    # page_index = get_page_index(page)
+    # num = yield from Song.findNumber('count(id)')
+    # p = Page(num, page_index)
+    # if num == 0:
+    #     return dict(page=p, songs=())
+    # songs = yield from Song.findAll(orderBy='created_at desc', limit=(p.offset, p.limit))
+    # return dict(page=p, blogs=songs)
     p = Page(num, page_index)
     songs = [{
         'id': 1,

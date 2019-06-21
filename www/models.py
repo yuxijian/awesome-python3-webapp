@@ -52,3 +52,19 @@ class Comment(Model):
     user_image = StringField(ddl='varchar(500)')
     content = TextField()
     created_at = FloatField(default=time.time)
+
+
+class Song(Model):
+    __table__ = 'songs'
+
+    id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
+    song_id = StringField(ddl='varchar(50)')
+    singer_id = StringField(ddl='varchar(50)')
+    singer_name = StringField(ddl='varchar(50)')
+    title = StringField(ddl='varchar(50)')
+    song_url = StringField(ddl='varchar(50)')
+    description = TextField()
+    user_id = StringField(ddl='varchar(50)')
+    user_name = StringField(ddl='varchar(50)')
+    user_image = StringField(ddl='varchar(500)')
+    created_at = FloatField(default=time.time)
